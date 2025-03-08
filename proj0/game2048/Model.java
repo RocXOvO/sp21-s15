@@ -125,21 +125,13 @@ public class Model extends Observable {
             }
         }
     }
-    public boolean tilt(Side side) {
-        boolean changed;
-        changed = false;
-
-        // TODO: Modify this.board (and perhaps this.score) to account
-        // for the tilt to the Side SIDE. If the board changed, set the
-        // changed local variable to true.
-
-        // only consider up.
+    public boolean tilt_direction(Side side, boolean changed){
         setalltilemergeTrue(board);
         for (int c = board.size()-1;c >= 0;c--){
             for (int r = board.size()-1;r >= 0;r--){
                 Tile t = board.tile(c, r);
                 if (t != null) {
-                    for (int i = board.size() - 1; i > t.row(); i--){
+                    for (int i = board.size() - 1; i > r; i--){
                         Tile dtile = board.tile(c,i);
                         //consider merge.
                         if (dtile != null) {
@@ -148,7 +140,7 @@ public class Model extends Observable {
                             if (value_equal && detected && dtile.merged) {
                                 board.move(c, i, t);
                                 score += t.value() * 2;
-                                board.tile(dtile.col(), dtile.row()).merged = false;//indicate this tile have merged.
+                                board.tile(c, i).merged = false;//indicate this tile have merged.
                                 changed = true;
                                 break;
                             }
@@ -163,6 +155,31 @@ public class Model extends Observable {
                     }
                 }
             }
+        }
+        return changed;
+    }
+    public boolean tilt(Side side) {
+        boolean changed;
+        changed = false;
+        if (side == Side.NORTH){
+            changed = tilt_direction(side,changed);
+        }
+        if (side == Side.WEST){
+            board.setViewingPerspective(Side.WEST);
+            changed = tilt_direction(side,changed);
+            board.setViewingPerspective(Side.NORTH);
+        }
+        if (side == Side.EAST){
+            board.setViewingPerspective(Side.EAST);
+            changed = tilt_direction(side,changed);
+            board.setViewingPerspective(Side.NORTH);
+
+        }
+        if (side == Side.SOUTH){
+            board.setViewingPerspective(Side.SOUTH);
+            changed = tilt_direction(side,changed);
+            board.setViewingPerspective(Side.NORTH);
+
         }
         checkGameOver();
         if (changed) {

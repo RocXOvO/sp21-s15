@@ -678,6 +678,27 @@ public class TestModel extends TestUtils {
         checkChanged(Side.SOUTH, true, changed);
         checkModel(after, 4, 0, prevBoard, Side.SOUTH);
     }
+    @Test
+    public void testDownAdjacentMergeMove1() {
+        int[][] before = new int[][]{
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
+                {0, 2, 2, 0},
+                {2, 8, 16, 2},
+        };
+        int[][] after = new int[][]{
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
+                {0, 0, 0, 4},
+                {2, 8, 16, 2},
+        };
+
+        updateModel(before, 0, 0, false);
+        String prevBoard = model.toString();
+        boolean changed = model.tilt(Side.EAST);
+        checkChanged(Side.EAST, true, changed);
+        checkModel(after, 4, 0, prevBoard, Side.EAST);
+    }
 
     @Test
     /** Move and merge non-adjacent tiles down. */
