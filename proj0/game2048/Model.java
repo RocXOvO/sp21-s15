@@ -107,9 +107,9 @@ public class Model extends Observable {
      *    and the trailing tile does not.
      * */
     //detect if there is another tile between Tile dtile and Tile t.
-    public  boolean detectbarrier(Tile dtile,Tile t,Board board) {
-        for (int r = dtile.row()-1; r > t.row(); r--) {
-            if (board.tile(dtile.col(), r) != null) {
+    public  boolean detectbarrier(Tile dtile, Tile t, Board board, int c, int r, int i) {
+        for (int row = i-1; row > r; row--) {
+            if (board.tile(c, row) != null) {
                 return false;
             }
         }
@@ -131,11 +131,12 @@ public class Model extends Observable {
             for (int r = board.size()-1;r >= 0;r--){
                 Tile t = board.tile(c, r);
                 if (t != null) {
+                    //i is used for document dtile.row()
                     for (int i = board.size() - 1; i > r; i--){
                         Tile dtile = board.tile(c,i);
                         //consider merge.
                         if (dtile != null) {
-                            boolean detected = detectbarrier(dtile, t, board);
+                            boolean detected = detectbarrier(dtile, t, board, c, r, i);
                             boolean value_equal = dtile.value() == t.value();
                             if (value_equal && detected && dtile.merged) {
                                 board.move(c, i, t);
