@@ -159,29 +159,15 @@ public class Model extends Observable {
         }
         return changed;
     }
+    public check_merged(){
+
+    }
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
-        if (side == Side.NORTH){
-            changed = tilt_direction(side,changed);
-        }
-        if (side == Side.WEST){
-            board.setViewingPerspective(Side.WEST);
-            changed = tilt_direction(side,changed);
-            board.setViewingPerspective(Side.NORTH);
-        }
-        if (side == Side.EAST){
-            board.setViewingPerspective(Side.EAST);
-            changed = tilt_direction(side,changed);
-            board.setViewingPerspective(Side.NORTH);
-
-        }
-        if (side == Side.SOUTH){
-            board.setViewingPerspective(Side.SOUTH);
-            changed = tilt_direction(side,changed);
-            board.setViewingPerspective(Side.NORTH);
-
-        }
+        board.setViewingPerspective(side);
+        changed = tilt_direction(side,changed);
+        board.setViewingPerspective(Side.NORTH);
         checkGameOver();
         if (changed) {
             setChanged();
