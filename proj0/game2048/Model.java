@@ -106,6 +106,25 @@ public class Model extends Observable {
      *    value, then the leading two tiles in the direction of motion merge,
      *    and the trailing tile does not.
      * */
+    //detect if there is another tile between Tile dtile and Tile t.
+    public  boolean detectbarrier(Tile dtile,Tile t,Board board) {
+        for (int r = dtile.row()-1; r > t.row(); r--) {
+            if (board.tile(dtile.col(), r) != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void setalltilemergeTrue(Board board){
+        for (int c = board.size() - 1;c >= 0;c--) {
+            for (int r = board.size() - 1; r >= 0; r--) {
+                if (board.tile(c,r) != null){
+                    board.tile(c,r).merged = true;//in this round not merged yet.
+                }
+            }
+        }
+    }
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
@@ -114,6 +133,37 @@ public class Model extends Observable {
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
+        // only consider up.
+        setalltilemergeTrue(board);
+        for (int c = board.size()-1;c >= 0;c--){
+            for (int r = board.size()-1;r >= 0;r--){
+                Tile t = board.tile(c, r);
+                if (t != null) {
+                    for (int i = board.size() - 1; i > t.row(); i--){
+                        Tile dtile = board.tile(c,i);
+                        //consider merge.
+                        if (dtile != null) {
+                            boolean detected = detectbarrier(dtile, t, board);
+                            boolean value_equal = dtile.value() == t.value();
+                            if (value_equal && detected && dtile.merged) {
+                                board.move(c, i, t);
+                                score += t.value() * 2;
+                                board.tile(dtile.col(), dtile.row()).merged = false;//indicate this tile have merged.
+                                changed = true;
+                                break;
+                            }
+                        }
+                        //consider just move.
+                        if (dtile == null){
+                            board.move(c, i, t);
+                            board.tile(c,i).merged = true;
+                            changed = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         checkGameOver();
         if (changed) {
             setChanged();
@@ -138,6 +188,13 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+        for(int i=0;i< b.size();i++){
+            for (int j=0;j<b.size();j++){
+                if (b.tile(i,j)==null){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -148,6 +205,15 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        for(int i=0;i< b.size();i++){
+            for (int j=0;j<b.size();j++){
+                if(b.tile(i,j)!=null) {
+                    if (b.tile(i, j).value() == MAX_PIECE) {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
@@ -159,6 +225,33 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        /*one condition:There is a empty tile.*/
+        for(int col = 0;col < b.size(); col++){
+            for (int row = 0;row < b.size(); row++){
+                if (b.tile(col,row) == null){
+                    return true;
+                }
+            }
+        }
+        /*the other condition:There are two adjacent tiles with the same value.*/
+        for(int col = 0;col < b.size();col++){
+            for (int row = 0;row < b.size();row++){
+                Tile current = b.tile(col,row);
+                /*检查右边方块*/
+                if (col < b.size()-1) {
+                    Tile checkright=b.tile(col+1,row);
+                    if (current != null && checkright.value() == current.value()) {
+                        return true;
+                    }
+                }
+                if (row < b.size()-1){
+                    Tile checkup=b.tile(col,row+1);
+                    if (current != null && checkup.value() == current.value()){
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
