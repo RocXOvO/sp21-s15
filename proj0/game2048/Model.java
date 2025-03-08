@@ -106,25 +106,7 @@ public class Model extends Observable {
      *    value, then the leading two tiles in the direction of motion merge,
      *    and the trailing tile does not.
      * */
-    //detect if there is another tile between Tile dtile and Tile t.
-    public  boolean detectbarrier(Tile dtile,Tile t,Board board) {
-        for (int r = dtile.row()-1; r > t.row(); r--) {
-            if (board.tile(dtile.col(), r) != null) {
-                return false;
-            }
-        }
-        return true;
-    }
 
-    public void setalltilemergeTrue(Board board){
-        for (int c = board.size() - 1;c >= 0;c--) {
-            for (int r = board.size() - 1; r >= 0; r--) {
-                if (board.tile(c,r) != null){
-                    board.tile(c,r).merged = true;//in this round not merged yet.
-                }
-            }
-        }
-    }
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
@@ -133,37 +115,6 @@ public class Model extends Observable {
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
-        // only consider up.
-        setalltilemergeTrue(board);
-        for (int c = board.size()-1;c >= 0;c--){
-            for (int r = board.size()-1;r >= 0;r--){
-                Tile t = board.tile(c, r);
-                if (t != null) {
-                    for (int i = board.size() - 1; i > t.row(); i--){
-                        Tile dtile = board.tile(c,i);
-                        //consider merge.
-                        if (dtile != null) {
-                            boolean detected = detectbarrier(dtile, t, board);
-                            boolean value_equal = dtile.value() == t.value();
-                            if (value_equal && detected && dtile.merged) {
-                                board.move(c, i, t);
-                                score += t.value() * 2;
-                                board.tile(dtile.col(), dtile.row()).merged = false;//indicate this tile have merged.
-                                changed = true;
-                                break;
-                            }
-                        }
-                        //consider just move.
-                        if (dtile == null){
-                            board.move(c, i, t);
-                            board.tile(c,i).merged = true;
-                            changed = true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
         checkGameOver();
         if (changed) {
             setChanged();
