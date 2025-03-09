@@ -1,5 +1,7 @@
 package game2048;
 
+import java.time.chrono.MinguoEra;
+import java.util.Base64;
 import java.util.Formatter;
 import java.util.Observable;
 
@@ -16,6 +18,12 @@ public class Model extends Observable {
     private int maxScore;
     /** True iff game is ended. */
     private boolean gameOver;
+    /** To document if tiles are merged.*/
+
+    private boolean merged = false;
+
+    /** Document how far a tile can reach.*/
+    private int originSize = 3;
 
     /* Coordinate System: column C, row R of the board (where row 0,
      * column 0 is the lower-left corner of the board) will correspond
@@ -114,7 +122,9 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+        board.setViewingPerspective(side);
+        changed = moveBoard(board);
+        board.setViewingPerspective(Side.NORTH);
         checkGameOver();
         if (changed) {
             setChanged();
@@ -122,6 +132,83 @@ public class Model extends Observable {
         return changed;
     }
 
+    /**
+     * merge and move a column in the same time.
+     * @param board BOARD
+     * @param col to tell which column is merging
+     * @return to tell if this column made a merge.
+     */
+    public boolean moveOneColumn(Board board,int col) {
+        boolean changed = false;
+        for (int r = board.size() - 1; r >= 0; r--) {
+            Tile t = board.tile(col, r);
+            if (t != null) {
+                changed = MergeTile(t, r, col);
+            }
+        }
+        return changed;
+    }
+    public boolean MergeTile(Tile t, int r,int col){
+        boolean changed = false;
+        for (int des = originSize;des > r; des--) {
+            if (board.tile(col,des)!=null) {
+                boolean value_equal = board.tile(col, des).value() == t.value();
+                if (detectbarrier(board, col, des, r) && value_equal) {
+                    merged = board.move(col, des, t);
+                    changed = true;
+                    if (merged) {
+                        score += board.tile(col, des).value();
+                        originSize -= 1;
+                    }
+                    break;
+                }
+                if (detectbarrier(board, col, des, r) && !value_equal){
+                    board.move(col, des - 1, t);
+                    changed = true;
+                    break;
+                }
+            }else {
+                board.move(col, des, t);
+                changed = true;
+                break;
+            }
+        }
+        return changed;
+    }
+
+    /**
+     * to detect in one column if there is another tile between dt and t.
+     * @param board pass BOARD
+     * @param dr destination TILE dtile.row()
+     * @param r origin TILE tile.row()
+     * @return true:no barrier false: barrier exists
+     */
+    public boolean detectbarrier(Board board,int col,int dr,int r){
+        for (int row = dr - 1;row > r;row--){
+            if (board.tile(col, row) != null){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * this function is used to complete ALL Tile tiles moving.
+     * @param board pass BOARD
+     */
+    public boolean moveBoard(Board board){
+        boolean changed = false;
+        boolean flag = false; //document if there is a change in a column.
+        for (int c = board.size() - 1;c >= 0;c--){
+            originSize = board.size() - 1;
+            merged = false ;
+            changed = moveOneColumn(board, c);
+            if (changed){
+                flag = true;
+            }
+        }
+        return flag;
+    }
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
      */
