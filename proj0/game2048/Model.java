@@ -148,6 +148,14 @@ public class Model extends Observable {
         }
         return changed;
     }
+
+    /**
+     * to merge and move tiles in one column.
+     * @param t used to comfirm which tile to move
+     * @param r row
+     * @param col column
+     * @return pass BOOLEAN changed to repaint GUI
+     */
     public boolean MergeTile(Tile t, int r,int col){
         boolean changed = false;
         for (int des = originSize;des > r; des--) {
@@ -164,12 +172,16 @@ public class Model extends Observable {
                 }
                 if (detectbarrier(board, col, des, r) && !value_equal){
                     board.move(col, des - 1, t);
-                    changed = true;
+                    if ((des-1)!= r) {
+                        changed = true;
+                    }
                     break;
                 }
             }else {
                 board.move(col, des, t);
-                changed = true;
+                if (des != r) {
+                    changed = true;
+                }
                 break;
             }
         }
