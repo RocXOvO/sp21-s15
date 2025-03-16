@@ -1,8 +1,5 @@
 package timingtest;
-import afu.org.checkerframework.checker.oigj.qual.O;
 import edu.princeton.cs.algs4.Stopwatch;
-import org.checkerframework.checker.units.qual.A;
-import org.checkerframework.checker.units.qual.Time;
 
 /**
  * Created by hug.

@@ -1,9 +1,6 @@
 package randomizedtest;
 
-import edu.princeton.cs.algs4.In;
 import org.junit.Test;
-import timingtest.AList;
-import timingtest.TimeAList;
 import edu.princeton.cs.algs4.StdRandom;
 import static org.junit.Assert.assertEquals;
 
