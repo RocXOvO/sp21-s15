@@ -6,6 +6,9 @@ public class ArrayDeque<Anytype> {
     private int size;
     public static int MIN_DEFAULT_SIZE = 8;
 
+    /**Creat a ArrayDeque with a initialized size of 8.
+     * nextFirst = 0 and nextLast = 1;
+     */
     public ArrayDeque(){
         item = (Anytype[]) new Object[MIN_DEFAULT_SIZE];
         nextFirst = 0;
@@ -51,6 +54,7 @@ public class ArrayDeque<Anytype> {
         System.out.println("\n");
     }
 
+    //Constant time requested.
     public Anytype removeFirst(){
         if (isEmpty()){
             return null;
@@ -62,6 +66,7 @@ public class ArrayDeque<Anytype> {
         return valueStore;
     }
 
+    //Constant time requested.
     public Anytype removeLast(){
         if (isEmpty()){
             return null;
@@ -73,11 +78,15 @@ public class ArrayDeque<Anytype> {
         return valueStore;
     }
 
+    //Constant time requested.
+    //+ 1 to get the first item index.
     public Anytype get(int index){
-        if (index < 0 || index > size -1){
-            return null;
+        if (index == 0){
+            return item[(nextFirst + item.length + 1) % item.length];
+        }else if(index == 1) {
+            return item[(nextLast + item.length - 1) % item.length];
         }
-        return item[(index + nextFirst + item.length) % item.length];
+        return null;
     }
 
     /**This function I choose this kind of type to complete.
