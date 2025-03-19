@@ -81,12 +81,11 @@ public class ArrayDeque<Anytype> {
     //Constant time requested.
     //+ 1 to get the first item index.
     public Anytype get(int index){
-        if (index == 0){
-            return item[(nextFirst + item.length + 1) % item.length];
-        }else if(index == 1) {
-            return item[(nextLast + item.length - 1) % item.length];
+        if (index < 0 || index > item.length - 1) {
+            return null;
         }
-        return null;
+        int ActualIndex = (nextFirst + 1 + index + item.length) % item.length;
+        return item[ActualIndex];
     }
 
     /**This function I choose this kind of type to complete.

@@ -92,7 +92,6 @@ public class LinkedListDeque<Anytype> {
         LinkedListNode node = sentinel.next;
         while (node.next != sentinel && index != 0) {
             node = node.next;
-            index--;
         }
         return node.item;
     }
