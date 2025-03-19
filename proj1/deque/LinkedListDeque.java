@@ -28,19 +28,15 @@ public class LinkedListDeque<Anytype> {
     }
 
     public void addFirst(Anytype item) {
-        LinkedListNode newnode = new LinkedListNode(null,item,null);
-        newnode.next = sentinel.next;
-        newnode.prev = sentinel;
+        LinkedListNode newnode = new LinkedListNode(sentinel,item,sentinel.next);
         sentinel.next.prev = newnode;
         sentinel.next = newnode;
         size = size + 1;
     }
 
     public void addLast(Anytype item) {
-        LinkedListNode newnode = new LinkedListNode(null,item,null);
-        newnode.next = sentinel;
-        newnode.prev = sentinel.next;
-        sentinel.next.next = newnode;
+        LinkedListNode newnode = new LinkedListNode(sentinel.prev,item,sentinel);
+        sentinel.prev.next = newnode;
         sentinel.prev = newnode;
         size = size + 1;
 
