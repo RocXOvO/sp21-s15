@@ -41,7 +41,7 @@ public class LinkedListDequeTest {
     public void addRemoveTest() {
 
 
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<>();
 		// should be empty
 		assertTrue("lld1 should be empty upon initialization", lld1.isEmpty());
 
@@ -82,8 +82,8 @@ public class LinkedListDequeTest {
     public void multipleParamTest() {
 
 
-        LinkedListDeque<String>  lld1 = new LinkedListDeque<String>();
-        LinkedListDeque<Double>  lld2 = new LinkedListDeque<Double>();
+        LinkedListDeque<String> lld1 = new LinkedListDeque<>();
+        LinkedListDeque<Double> lld2 = new LinkedListDeque<Double>();
         LinkedListDeque<Boolean> lld3 = new LinkedListDeque<Boolean>();
 
         lld1.addFirst("string");
@@ -101,7 +101,7 @@ public class LinkedListDequeTest {
     public void emptyNullReturnTest() {
 
 
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<>();
 
         boolean passed1 = false;
         boolean passed2 = false;
@@ -116,7 +116,7 @@ public class LinkedListDequeTest {
     public void bigLLDequeTest() {
 
 
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<>();
         for (int i = 0; i < 1000000; i++) {
             lld1.addLast(i);
         }

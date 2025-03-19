@@ -9,7 +9,7 @@ public class ArrayDeque<Anytype> {
     public ArrayDeque(){
         item = (Anytype[]) new Object[MIN_DEFAULT_SIZE];
         nextFirst = 0;
-        nextLast = 0;
+        nextLast = 1;
         size = 0;
     }
 
@@ -52,6 +52,9 @@ public class ArrayDeque<Anytype> {
     }
 
     public Anytype removeFirst(){
+        if (isEmpty()){
+            return null;
+        }
         nextFirst = (nextFirst + 1 + item.length) % item.length;
         Anytype valueStore = item[nextFirst];
         item[nextFirst] = null;
@@ -60,6 +63,9 @@ public class ArrayDeque<Anytype> {
     }
 
     public Anytype removeLast(){
+        if (isEmpty()){
+            return null;
+        }
         nextLast = (nextLast - 1 + item.length) % item.length;
         Anytype valueStore = item[nextLast];
         item[nextLast] = null;
@@ -74,12 +80,17 @@ public class ArrayDeque<Anytype> {
         return item[(index + nextFirst + item.length) % item.length];
     }
 
-    public void resize(ArrayDeque<Anytype> ArrayList){
+    /**This function I choose this kind of type to complete.
+     * [a,e,f,g,h,d,c,b]nextFirst = 4,nextLast = 5,supposed addFirst i,then it will be:
+     * [i,d,c,b,a,e,f,g,h,null,null,null,null,null,null,null].
+     */
+    public void resize(){
         Anytype[] a = (Anytype[]) new Object[item.length * 2];
         for (int i = 0;i < item.length; i++){
-            a[i] = item[(i + nextFirst + item.length) % item.length];
+            a[i] = item[(i + nextFirst + 1 + item.length) % item.length];
         }
-        nextFirst = item.length * 2 - 1;
-        nextLast = item.length + 1;
+        item = a;
+        nextFirst = (size - 1 + item.length) % item.length;
+        nextLast = size;
     }
 }

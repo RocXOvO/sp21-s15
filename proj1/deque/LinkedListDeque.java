@@ -1,24 +1,34 @@
 package deque;
 public class LinkedListDeque<Anytype> {
-    private LinkedListDeque<Anytype> prev;
-    private Anytype item;
-    private LinkedListDeque<Anytype> next;
-    private int size = 0;
+    public class LinkedListNode {
 
-    private LinkedListDeque<Anytype> sentinel;
+        private LinkedListNode prev;
+        private Anytype item;
+        private LinkedListNode next;
 
-    public LinkedListDeque(Anytype x){
-        this.item = x;
+        public LinkedListNode(LinkedListNode prev, Anytype item, LinkedListNode next) {
+            this.prev = prev;
+            this.item = item;
+            this.next = next;
+        }
+
+        public LinkedListNode() {
+            this(null, null, null);
+        }
+
     }
+    private int size;
+    private LinkedListNode sentinel;
 
-    public LinkedListDeque(){
-        sentinel = new LinkedListDeque<>(null);
+    public LinkedListDeque() {
+        sentinel = new LinkedListNode();
         sentinel.next = sentinel;
         sentinel.prev = sentinel;
+        size = 0;
     }
 
-    public void addFirst(Anytype item){
-        LinkedListDeque<Anytype> newnode = new LinkedListDeque<>(item);
+    public void addFirst(Anytype item) {
+        LinkedListNode newnode = new LinkedListNode(null,item,null);
         newnode.next = sentinel.next;
         newnode.prev = sentinel;
         sentinel.next.prev = newnode;
@@ -26,8 +36,8 @@ public class LinkedListDeque<Anytype> {
         size = size + 1;
     }
 
-    public void addLast(Anytype item){
-        LinkedListDeque<Anytype> newnode = new LinkedListDeque<>(item);
+    public void addLast(Anytype item) {
+        LinkedListNode newnode = new LinkedListNode(null,item,null);
         newnode.next = sentinel;
         newnode.prev = sentinel.next;
         sentinel.next.next = newnode;
@@ -36,20 +46,20 @@ public class LinkedListDeque<Anytype> {
 
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         if (sentinel.next == sentinel) {
             return true;
         }
         return false;
     }
 
-    public int size(){
+    public int size() {
         return size;
     }
 
-    public void printDeque(){
-        LinkedListDeque<Anytype> reference = sentinel.next;
-        while (reference == sentinel){
+    public void printDeque() {
+        LinkedListNode reference = sentinel.next;
+        while (reference != sentinel) {
             System.out.println(reference.item);
             System.out.println(" ");
             reference = reference.next;
@@ -57,9 +67,9 @@ public class LinkedListDeque<Anytype> {
         System.out.println("\n");
     }
 
-    public Anytype removeFirst(){
+    public Anytype removeFirst() {
         if (!isEmpty()) {
-            LinkedListDeque<Anytype> RemoveNode = sentinel.next;
+            LinkedListNode RemoveNode = sentinel.next;
             sentinel.next = RemoveNode.next;
             RemoveNode.next.prev = sentinel;
             size--;
@@ -68,9 +78,9 @@ public class LinkedListDeque<Anytype> {
         return null;
     }
 
-    public Anytype removeLast(){
-        if (!isEmpty()){
-            LinkedListDeque<Anytype> RemoveNode = sentinel.prev;
+    public Anytype removeLast() {
+        if (!isEmpty()) {
+            LinkedListNode RemoveNode = sentinel.prev;
             sentinel.prev = RemoveNode.prev;
             RemoveNode.prev.next = sentinel;
             size--;
@@ -79,11 +89,11 @@ public class LinkedListDeque<Anytype> {
         return null;
     }
 
-    public Anytype get(int index){
-        if (index > size - 1 || index < 0){
+    public Anytype get(int index) {
+        if (index > size - 1 || index < 0) {
             return null;
         }
-        LinkedListDeque<Anytype> node = sentinel.next;
+        LinkedListNode node = sentinel.next;
         while (node.next != sentinel && index != 0) {
             node = node.next;
             index--;
@@ -91,17 +101,17 @@ public class LinkedListDeque<Anytype> {
         return node.item;
     }
 
-    public Anytype getRecursive(int index){
-        if (index < 0 || index > size - 1){
+    public Anytype getRecursive(int index) {
+        if (index < 0 || index > size - 1) {
             return null;
         }
         return getRecursiveHelper(index, sentinel.next);
     }
 
-    public Anytype getRecursiveHelper(int index,LinkedListDeque<Anytype> node){
-        if (index == 0){
+    public Anytype getRecursiveHelper(int index, LinkedListNode node) {
+        if (index == 0) {
             return node.item;
         }
-        return getRecursiveHelper(index - 1,node.next);
+        return getRecursiveHelper(index - 1, node.next);
     }
 }
