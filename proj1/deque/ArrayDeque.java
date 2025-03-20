@@ -1,4 +1,5 @@
 package deque;
+import java.util.Iterator;
 public class ArrayDeque<Anytype> {
     private Anytype[] item;
     private int nextFirst;
@@ -26,11 +27,12 @@ public class ArrayDeque<Anytype> {
     }
 
     public void addLast(Anytype x){
-        if (size != item.length) {
+        if (size == item.length) {
+            resize();
+        }
             item[nextLast] = x;
             nextLast = (nextLast + 1 + item.length) % item.length;
             size++;
-        }
     }
 
     public boolean isEmpty(){
@@ -59,6 +61,7 @@ public class ArrayDeque<Anytype> {
         if (isEmpty()){
             return null;
         }
+        resizeRemove();
         nextFirst = (nextFirst + 1 + item.length) % item.length;
         Anytype valueStore = item[nextFirst];
         item[nextFirst] = null;
@@ -71,6 +74,7 @@ public class ArrayDeque<Anytype> {
         if (isEmpty()){
             return null;
         }
+        resizeRemove();
         nextLast = (nextLast - 1 + item.length) % item.length;
         Anytype valueStore = item[nextLast];
         item[nextLast] = null;
@@ -98,7 +102,38 @@ public class ArrayDeque<Anytype> {
             a[i] = item[(i + nextFirst + 1 + item.length) % item.length];
         }
         item = a;
-        nextFirst = (size - 1 + item.length) % item.length;
+        nextFirst = (item.length - 1) % item.length;
         nextLast = size;
     }
+
+    public void resizeRemove(){
+        if ((double) (size - 1) / item.length < 0.25 && item.length >= 16) {
+            Anytype[] a = (Anytype[]) new Object[item.length / 2];
+            for (int i = 0;i < item.length; i++){
+                a[i] = item[(i + nextFirst + 1 + item.length) % item.length];
+            }
+            item = a;
+            nextFirst = (item.length - 1) % item.length;
+            nextLast = size;
+        }
+    }
+    //Supposed Object o isn't null.
+    public boolean equals(Object o){
+        if (o instanceof ArrayDeque){
+            if (((ArrayDeque<?>) o).nextLast == nextLast && ((ArrayDeque<?>) o).nextFirst == nextFirst){
+                for (int i = 0;i < size;i++){
+                    if (((ArrayDeque<?>) o).get(1) != this.get(1)){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+    /*
+    public Iterator<Anytype> Iterator(){
+
+    }
+    */
 }

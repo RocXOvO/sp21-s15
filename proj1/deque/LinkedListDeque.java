@@ -1,4 +1,6 @@
 package deque;
+import java.util.Comparator;
+
 public class LinkedListDeque<Anytype> {
     public class LinkedListNode {
 
