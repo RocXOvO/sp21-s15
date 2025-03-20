@@ -1,5 +1,6 @@
 package deque;
 import java.util.Comparator;
+import java.util.LinkedList;
 
 public class LinkedListDeque<Anytype> {
     public class LinkedListNode {
@@ -94,6 +95,7 @@ public class LinkedListDeque<Anytype> {
         LinkedListNode node = sentinel.next;
         while (node.next != sentinel && index != 0) {
             node = node.next;
+            index--;
         }
         return node.item;
     }
@@ -111,4 +113,20 @@ public class LinkedListDeque<Anytype> {
         }
         return getRecursiveHelper(index - 1, node.next);
     }
+    public boolean equals(Object o){
+        if (o instanceof LinkedList){
+            LinkedList<?> oPointer = (LinkedList<?>) o;
+            for (int i = 0;i< size();i++){
+                if (oPointer.get(i) != get(i)){
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+    /*
+    public Iterator<Anytype> Iterator(){
+
+    }
+    */
 }

@@ -88,7 +88,7 @@ public class ArrayDeque<Anytype> {
         if (index < 0 || index > item.length - 1) {
             return null;
         }
-        int ActualIndex = (nextFirst + 1 + index + item.length) % item.length;
+        int ActualIndex = (nextFirst + index + 1 + item.length) % item.length;
         return item[ActualIndex];
     }
 
@@ -122,7 +122,7 @@ public class ArrayDeque<Anytype> {
         if (o instanceof ArrayDeque){
             if (((ArrayDeque<?>) o).nextLast == nextLast && ((ArrayDeque<?>) o).nextFirst == nextFirst){
                 for (int i = 0;i < size;i++){
-                    if (((ArrayDeque<?>) o).get(1) != this.get(1)){
+                    if (((ArrayDeque<?>) o).get(i) != this.get(i)){
                         return false;
                     }
                 }
