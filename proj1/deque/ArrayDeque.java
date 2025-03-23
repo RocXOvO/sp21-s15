@@ -1,6 +1,6 @@
 package deque;
 import java.util.Iterator;
-public class ArrayDeque<Anytype> {
+public class ArrayDeque<Anytype> implements Deque<Anytype> {
     private Anytype[] item;
     private int nextFirst;
     private int nextLast;
@@ -17,6 +17,14 @@ public class ArrayDeque<Anytype> {
         size = 0;
     }
 
+    public ArrayDeque(int capacity){
+        item = (Anytype[]) new Object[capacity];
+        nextFirst = 0;
+        nextLast = 1;
+        size = 0;
+    }
+
+@Override
     public void addFirst(Anytype x){
         if (size == item.length) {
             resize();
@@ -26,6 +34,7 @@ public class ArrayDeque<Anytype> {
             size++;
     }
 
+@Override
     public void addLast(Anytype x){
         if (size == item.length) {
             resize();
@@ -35,19 +44,12 @@ public class ArrayDeque<Anytype> {
             size++;
     }
 
-    public boolean isEmpty(){
-        for (int i = 0;i < item.length;i++){
-            if (item[i] != null){
-                return false;
-            }
-        }
-        return true;
-    }
-
+@Override
     public int size(){
         return size;
     }
 
+@Override
     public void printDeque(){
         for (int i = 0;i < item.length;i++){
             System.out.println(item[i]);
@@ -56,6 +58,7 @@ public class ArrayDeque<Anytype> {
         System.out.println("\n");
     }
 
+@Override
     //Constant time requested.
     public Anytype removeFirst(){
         if (isEmpty()){
@@ -69,6 +72,7 @@ public class ArrayDeque<Anytype> {
         return valueStore;
     }
 
+@Override
     //Constant time requested.
     public Anytype removeLast(){
         if (isEmpty()){
@@ -82,6 +86,7 @@ public class ArrayDeque<Anytype> {
         return valueStore;
     }
 
+@Override
     //Constant time requested.
     //+ 1 to get the first item index.
     public Anytype get(int index){
@@ -117,6 +122,7 @@ public class ArrayDeque<Anytype> {
             nextLast = size;
         }
     }
+
     //Supposed Object o isn't null.
     public boolean equals(Object o){
         if (o instanceof ArrayDeque){
@@ -133,7 +139,7 @@ public class ArrayDeque<Anytype> {
     }
     /*
     public Iterator<Anytype> Iterator(){
-
+        return
     }
     */
 }

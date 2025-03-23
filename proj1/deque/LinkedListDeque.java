@@ -2,7 +2,7 @@ package deque;
 import java.util.Comparator;
 import java.util.LinkedList;
 
-public class LinkedListDeque<Anytype> {
+public class LinkedListDeque<Anytype> implements Deque<Anytype>{
     public class LinkedListNode {
 
         private LinkedListNode prev;
@@ -30,6 +30,7 @@ public class LinkedListDeque<Anytype> {
         size = 0;
     }
 
+@Override
     public void addFirst(Anytype item) {
         LinkedListNode newnode = new LinkedListNode(sentinel,item,sentinel.next);
         sentinel.next.prev = newnode;
@@ -37,6 +38,7 @@ public class LinkedListDeque<Anytype> {
         size = size + 1;
     }
 
+@Override
     public void addLast(Anytype item) {
         LinkedListNode newnode = new LinkedListNode(sentinel.prev,item,sentinel);
         sentinel.prev.next = newnode;
@@ -45,17 +47,12 @@ public class LinkedListDeque<Anytype> {
 
     }
 
-    public boolean isEmpty() {
-        if (sentinel.next == sentinel) {
-            return true;
-        }
-        return false;
-    }
-
+@Override
     public int size() {
         return size;
     }
 
+@Override
     public void printDeque() {
         LinkedListNode reference = sentinel.next;
         while (reference != sentinel) {
@@ -66,6 +63,7 @@ public class LinkedListDeque<Anytype> {
         System.out.println("\n");
     }
 
+@Override
     public Anytype removeFirst() {
         if (!isEmpty()) {
             LinkedListNode RemoveNode = sentinel.next;
@@ -77,6 +75,7 @@ public class LinkedListDeque<Anytype> {
         return null;
     }
 
+@Override
     public Anytype removeLast() {
         if (!isEmpty()) {
             LinkedListNode RemoveNode = sentinel.prev;
@@ -88,6 +87,7 @@ public class LinkedListDeque<Anytype> {
         return null;
     }
 
+@Override
     public Anytype get(int index) {
         if (index > size - 1 || index < 0) {
             return null;
@@ -124,6 +124,7 @@ public class LinkedListDeque<Anytype> {
         }
         return false;
     }
+
     /*
     public Iterator<Anytype> Iterator(){
 
