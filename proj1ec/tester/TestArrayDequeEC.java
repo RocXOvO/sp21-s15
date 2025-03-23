@@ -29,7 +29,7 @@ public class TestArrayDequeEC {
                     Integer a = correctArrayDeque.removeFirst();
                     Integer b = bugArrayDeque.removeFirst();
                     message += "removeFirst()\n";
-                    assertEquals("Oh no!This is fucking bad:\n removeFirst is expected to be " + a + ",but turns out " + b + ".", a, b);
+                    assertEquals(message, a, b);
                 }
             }else if (OpNumber == 3){
                 if (!bugArrayDeque.isEmpty() && !correctArrayDeque.isEmpty()) {
