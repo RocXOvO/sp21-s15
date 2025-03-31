@@ -1,15 +1,14 @@
 package deque;
 import java.util.Iterator;
-import java.util.LinkedList;
 
-public class LinkedListDeque<Anytype> implements Deque<Anytype>, Iterable<Anytype> {
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     public class LinkedListNode {
 
         private LinkedListNode prev;
-        private Anytype item;
+        private T item;
         private LinkedListNode next;
 
-        public LinkedListNode(LinkedListNode prev, Anytype item, LinkedListNode next) {
+        public LinkedListNode(LinkedListNode prev, T item, LinkedListNode next) {
             this.prev = prev;
             this.item = item;
             this.next = next;
@@ -31,7 +30,7 @@ public class LinkedListDeque<Anytype> implements Deque<Anytype>, Iterable<Anytyp
     }
 
 @Override
-    public void addFirst(Anytype item) {
+    public void addFirst(T item) {
         LinkedListNode newnode = new LinkedListNode(sentinel,item,sentinel.next);
         sentinel.next.prev = newnode;
         sentinel.next = newnode;
@@ -39,7 +38,7 @@ public class LinkedListDeque<Anytype> implements Deque<Anytype>, Iterable<Anytyp
     }
 
 @Override
-    public void addLast(Anytype item) {
+    public void addLast(T item) {
         LinkedListNode newnode = new LinkedListNode(sentinel.prev,item,sentinel);
         sentinel.prev.next = newnode;
         sentinel.prev = newnode;
@@ -64,7 +63,7 @@ public class LinkedListDeque<Anytype> implements Deque<Anytype>, Iterable<Anytyp
     }
 
 @Override
-    public Anytype removeFirst() {
+    public T removeFirst() {
         if (!isEmpty()) {
             LinkedListNode RemoveNode = sentinel.next;
             sentinel.next = RemoveNode.next;
@@ -76,7 +75,7 @@ public class LinkedListDeque<Anytype> implements Deque<Anytype>, Iterable<Anytyp
     }
 
 @Override
-    public Anytype removeLast() {
+    public T removeLast() {
         if (!isEmpty()) {
             LinkedListNode RemoveNode = sentinel.prev;
             sentinel.prev = RemoveNode.prev;
@@ -88,7 +87,7 @@ public class LinkedListDeque<Anytype> implements Deque<Anytype>, Iterable<Anytyp
     }
 
 @Override
-    public Anytype get(int index) {
+    public T get(int index) {
         if (index > size - 1 || index < 0) {
             return null;
         }
@@ -100,14 +99,14 @@ public class LinkedListDeque<Anytype> implements Deque<Anytype>, Iterable<Anytyp
         return node.item;
     }
 
-    public Anytype getRecursive(int index) {
+    public T getRecursive(int index) {
         if (index < 0 || index > size - 1) {
             return null;
         }
         return getRecursiveHelper(index, sentinel.next);
     }
 
-    public Anytype getRecursiveHelper(int index, LinkedListNode node) {
+    public T getRecursiveHelper(int index, LinkedListNode node) {
         if (index == 0) {
             return node.item;
         }
@@ -125,11 +124,11 @@ public class LinkedListDeque<Anytype> implements Deque<Anytype>, Iterable<Anytyp
         return false;
     }
 
-    public Iterator<Anytype> iterator(){
+    public Iterator<T> iterator(){
         return new LinkedListDequeIterator();
     }
 
-    private class LinkedListDequeIterator implements Iterator<Anytype>{
+    private class LinkedListDequeIterator implements Iterator<T>{
         int Pst;
         public LinkedListDequeIterator(){
             Pst = 0;
@@ -138,8 +137,8 @@ public class LinkedListDeque<Anytype> implements Deque<Anytype>, Iterable<Anytyp
             return Pst < size;
         }
 
-        public Anytype next(){
-            Anytype returnItem = get(Pst);
+        public T next(){
+            T returnItem = get(Pst);
             Pst += 1;
             return returnItem;
         }

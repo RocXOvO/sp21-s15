@@ -1,8 +1,8 @@
 package deque;
 
 import java.util.Iterator;
-public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
-    private Anytype[] item;
+public class ArrayDeque<T> implements Deque<T>,Iterable<T> {
+    private T[] item;
     private int nextFirst;
     private int nextLast;
     private int size;
@@ -12,21 +12,21 @@ public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
      * nextFirst = 0 and nextLast = 1;
      */
     public ArrayDeque(){
-        item = (Anytype[]) new Object[MIN_DEFAULT_SIZE];
+        item = (T[]) new Object[MIN_DEFAULT_SIZE];
         nextFirst = 0;
         nextLast = 1;
         size = 0;
     }
 
     public ArrayDeque(int capacity){
-        item = (Anytype[]) new Object[capacity];
+        item = (T[]) new Object[capacity];
         nextFirst = 0;
         nextLast = 1;
         size = 0;
     }
 
 @Override
-    public void addFirst(Anytype x){
+    public void addFirst(T x){
         if (size == item.length) {
             resize();
         }
@@ -36,7 +36,7 @@ public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
     }
 
 @Override
-    public void addLast(Anytype x){
+    public void addLast(T x){
         if (size == item.length) {
             resize();
         }
@@ -52,22 +52,28 @@ public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
 
 @Override
     public void printDeque(){
-        for (int i = 0;i < item.length;i++){
-            System.out.println(item[i]);
+        if (isEmpty()){
+            System.out.println("\n");
+            return;
+        }
+        int index = (nextFirst + 1 + item.length) % item.length;
+        for (int i = 0;i < size;i++){
+            System.out.println(item[index]);
             System.out.println(" ");
+            index = (index + 1) % item.length;
         }
         System.out.println("\n");
     }
 
 @Override
     //Constant time requested.
-    public Anytype removeFirst(){
+    public T removeFirst(){
         if (isEmpty()){
             return null;
         }
         resizeRemove();
         nextFirst = (nextFirst + 1 + item.length) % item.length;
-        Anytype valueStore = item[nextFirst];
+        T valueStore = item[nextFirst];
         item[nextFirst] = null;
         size--;
         return valueStore;
@@ -75,13 +81,13 @@ public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
 
 @Override
     //Constant time requested.
-    public Anytype removeLast(){
+    public T removeLast(){
         if (isEmpty()){
             return null;
         }
         resizeRemove();
         nextLast = (nextLast - 1 + item.length) % item.length;
-        Anytype valueStore = item[nextLast];
+        T valueStore = item[nextLast];
         item[nextLast] = null;
         size--;
         return valueStore;
@@ -90,8 +96,8 @@ public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
 @Override
     //Constant time requested.
     //+ 1 to get the first item index.
-    public Anytype get(int index){
-        if (index < 0 || index > item.length - 1) {
+    public T get(int index){
+        if (index < 0 || index > size - 1) {
             return null;
         }
         int ActualIndex = (nextFirst + index + 1 + item.length) % item.length;
@@ -103,8 +109,8 @@ public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
      * [i,d,c,b,a,e,f,g,h,null,null,null,null,null,null,null].
      */
     public void resize(){
-        Anytype[] a = (Anytype[]) new Object[item.length * 2];
-        for (int i = 0;i < item.length; i++){
+        T[] a = (T[]) new Object[item.length * 2];
+        for (int i = 0;i < size; i++){
             a[i] = item[(i + nextFirst + 1 + item.length) % item.length];
         }
         item = a;
@@ -113,8 +119,8 @@ public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
     }
 
     public void resizeRemove(){
-        if ((double) (size - 1) / item.length < 0.25 && item.length >= 16) {
-            Anytype[] a = (Anytype[]) new Object[item.length / 2];
+        if (size > 0 && (double) (size - 1) / item.length < 0.25 && item.length >= 16) {
+            T[] a = (T[]) new Object[item.length / 2];
             for (int i = 0;i < item.length; i++){
                 a[i] = item[(i + nextFirst + 1 + item.length) % item.length];
             }
@@ -131,7 +137,7 @@ public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
         if (o instanceof ArrayDeque) {
             if (((ArrayDeque<?>) o).nextLast == nextLast && ((ArrayDeque<?>) o).nextFirst == nextFirst && ((ArrayDeque<?>) o).size == size) {
                 for (int i = 0; i < size; i++) {
-                    if (((ArrayDeque<?>) o).get(i) != this.get(i)) {
+                    if (((ArrayDeque<?>) o).get(i).equals(this.get(i))){
                         return false;
                     }
                 }
@@ -141,11 +147,11 @@ public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
         return false;
     }
 
-    public Iterator<Anytype> iterator(){
+    public Iterator<T> iterator(){
         return new ArrayDequeIterator();
     }
 
-    private class ArrayDequeIterator implements Iterator<Anytype>{
+    private class ArrayDequeIterator implements Iterator<T>{
         private int Pst;
         public ArrayDequeIterator(){
             this.Pst = 0;
@@ -154,8 +160,8 @@ public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
             return Pst < size;
         }
 
-        public Anytype next(){
-            Anytype returnItem = get(Pst);
+        public T next(){
+            T returnItem = get(Pst);
             Pst += 1;
             return returnItem;
         }
