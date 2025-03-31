@@ -1,8 +1,8 @@
 package deque;
-import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 
-public class LinkedListDeque<Anytype> implements Deque<Anytype>{
+public class LinkedListDeque<Anytype> implements Deque<Anytype>, Iterable<Anytype> {
     public class LinkedListNode {
 
         private LinkedListNode prev;
@@ -125,9 +125,23 @@ public class LinkedListDeque<Anytype> implements Deque<Anytype>{
         return false;
     }
 
-    /*
-    public Iterator<Anytype> Iterator(){
-
+    public Iterator<Anytype> iterator(){
+        return new LinkedListDequeIterator();
     }
-    */
+
+    private class LinkedListDequeIterator implements Iterator<Anytype>{
+        int Pst;
+        public LinkedListDequeIterator(){
+            Pst = 0;
+        }
+        public boolean hasNext(){
+            return Pst < size;
+        }
+
+        public Anytype next(){
+            Anytype returnItem = get(Pst);
+            Pst += 1;
+            return returnItem;
+        }
+    }
 }

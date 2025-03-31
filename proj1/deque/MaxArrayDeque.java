@@ -5,7 +5,7 @@ import java.util.Comparator;
 public class MaxArrayDeque<Anytype> extends ArrayDeque<Anytype> {
     private Comparator<Anytype> comparator;
     public MaxArrayDeque(Comparator<Anytype> c){
-        super();
+        super();//此处会隐式调用。如果不写也会自动初始化。
         comparator = c;
     }
 

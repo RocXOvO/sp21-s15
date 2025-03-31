@@ -1,6 +1,7 @@
 package deque;
+
 import java.util.Iterator;
-public class ArrayDeque<Anytype> implements Deque<Anytype> {
+public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
     private Anytype[] item;
     private int nextFirst;
     private int nextLast;
@@ -124,11 +125,11 @@ public class ArrayDeque<Anytype> implements Deque<Anytype> {
     }
 
     //Supposed Object o isn't null.
-    public boolean equals(Object o){
-        if (o instanceof ArrayDeque){
-            if (((ArrayDeque<?>) o).nextLast == nextLast && ((ArrayDeque<?>) o).nextFirst == nextFirst){
-                for (int i = 0;i < size;i++){
-                    if (((ArrayDeque<?>) o).get(i) != this.get(i)){
+    public boolean equals(Object o) {
+        if (o instanceof ArrayDeque) {
+            if (((ArrayDeque<?>) o).nextLast == nextLast && ((ArrayDeque<?>) o).nextFirst == nextFirst) {
+                for (int i = 0; i < size; i++) {
+                    if (((ArrayDeque<?>) o).get(i) != this.get(i)) {
                         return false;
                     }
                 }
@@ -137,9 +138,24 @@ public class ArrayDeque<Anytype> implements Deque<Anytype> {
         }
         return false;
     }
-    /*
-    public Iterator<Anytype> Iterator(){
-        return
+
+    public Iterator<Anytype> iterator(){
+        return new ArrayDequeIterator();
     }
-    */
+
+    private class ArrayDequeIterator implements Iterator<Anytype>{
+        private int Pst;
+        public ArrayDequeIterator(){
+            this.Pst = 0;
+        }
+        public boolean hasNext(){
+            return Pst < size;
+        }
+
+        public Anytype next(){
+            Anytype returnItem = item[Pst];
+            Pst += 1;
+            return returnItem;
+        }
+    }
 }
