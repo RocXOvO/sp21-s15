@@ -8,7 +8,7 @@ public class ArrayDequeTest {
     public void randomArrayDequeTest(){
         ArrayDeque<Integer> ArrayDequeT = new ArrayDeque<>();
         java.util.ArrayDeque<Integer> ArrayDequeC = new java.util.ArrayDeque<>();
-        int N = 5000;
+        int N = 50000;
         for (int i = 0;i < N;i++){
             int MagicNumber = StdRandom.uniform(0,4);
             if (MagicNumber == 0){
@@ -29,12 +29,21 @@ public class ArrayDequeTest {
             }else if (MagicNumber == 2){
                 //SIZE
                 assertEquals(ArrayDequeT.size(), ArrayDequeC.size());
-            }else if (MagicNumber == 3){
+            }else if (MagicNumber == 4){
                 //ADDLAST
                 int randomInt = StdRandom.uniform(0,100);
                 ArrayDequeT.addLast(randomInt);
                 ArrayDequeC.addLast(randomInt);
                 System.out.println("addLast（" + randomInt + ")");
+            }else if (MagicNumber == 3){
+                //REMOVELAST
+                if (ArrayDequeC.isEmpty() || ArrayDequeT.isEmpty()){
+                    continue;
+                }
+                int T = ArrayDequeT.removeLast();
+                int C = ArrayDequeC.removeLast();
+                assertEquals(T, C);
+                System.out.println("removeLast(" + C + ")");
             }
 
         }

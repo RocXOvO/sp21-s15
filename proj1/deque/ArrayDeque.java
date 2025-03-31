@@ -6,20 +6,13 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T> {
     private int nextFirst;
     private int nextLast;
     private int size;
-    public static int MIN_DEFAULT_SIZE = 8;
+    private static int MIN_DEFAULT_SIZE = 8;
 
     /**Creat a ArrayDeque with a initialized size of 8.
      * nextFirst = 0 and nextLast = 1;
      */
     public ArrayDeque(){
         item = (T[]) new Object[MIN_DEFAULT_SIZE];
-        nextFirst = 0;
-        nextLast = 1;
-        size = 0;
-    }
-
-    public ArrayDeque(int capacity){
-        item = (T[]) new Object[capacity];
         nextFirst = 0;
         nextLast = 1;
         size = 0;
@@ -71,10 +64,10 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T> {
         if (isEmpty()){
             return null;
         }
-        resizeRemove();
         nextFirst = (nextFirst + 1 + item.length) % item.length;
         T valueStore = item[nextFirst];
         item[nextFirst] = null;
+        resizeRemove();
         size--;
         return valueStore;
     }
@@ -85,10 +78,10 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T> {
         if (isEmpty()){
             return null;
         }
-        resizeRemove();
         nextLast = (nextLast - 1 + item.length) % item.length;
         T valueStore = item[nextLast];
         item[nextLast] = null;
+        resizeRemove();
         size--;
         return valueStore;
     }
@@ -108,7 +101,7 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T> {
      * [a,e,f,g,h,d,c,b]nextFirst = 4,nextLast = 5,supposed addFirst i,then it will be:
      * [i,d,c,b,a,e,f,g,h,null,null,null,null,null,null,null].
      */
-    public void resize(){
+    private void resize(){
         T[] a = (T[]) new Object[item.length * 2];
         for (int i = 0;i < size; i++){
             a[i] = item[(i + nextFirst + 1 + item.length) % item.length];
@@ -118,10 +111,10 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T> {
         nextLast = size;
     }
 
-    public void resizeRemove(){
+    private void resizeRemove(){
         if (size > 0 && (double) (size - 1) / item.length < 0.25 && item.length >= 16) {
             T[] a = (T[]) new Object[item.length / 2];
-            for (int i = 0;i < item.length; i++){
+            for (int i = 0;i < size; i++){
                 a[i] = item[(i + nextFirst + 1 + item.length) % item.length];
             }
             item = a;
@@ -135,18 +128,23 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T> {
         if (this == o) return true;
         if (o == null) return false;
         if (o instanceof ArrayDeque) {
-            if (((ArrayDeque<?>) o).nextLast == nextLast && ((ArrayDeque<?>) o).nextFirst == nextFirst && ((ArrayDeque<?>) o).size == size) {
-                for (int i = 0; i < size; i++) {
-                    if (((ArrayDeque<?>) o).get(i).equals(this.get(i))){
-                        return false;
-                    }
-                }
-                return true;
+            ArrayDeque<?> other = (ArrayDeque<?>) o;
+            if (other.size() != this.size) {
+                return false;
             }
+            for (int i = 0; i < size; i++) {
+                T thisItem = this.get(i);
+                Object otherItem = other.get(i);
+                if (thisItem == null) {
+                    if (otherItem != null) return false;
+                } else if (!thisItem.equals(otherItem)) {
+                    return false;
+                }
+            }
+            return true;
         }
         return false;
     }
-
     public Iterator<T> iterator(){
         return new ArrayDequeIterator();
     }
