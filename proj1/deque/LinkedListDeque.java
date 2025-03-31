@@ -114,8 +114,8 @@ public class LinkedListDeque<Anytype> implements Deque<Anytype>, Iterable<Anytyp
         return getRecursiveHelper(index - 1, node.next);
     }
     public boolean equals(Object o){
-        if (o instanceof LinkedList){
-            LinkedList<?> oPointer = (LinkedList<?>) o;
+        if (o instanceof LinkedListDeque){
+            LinkedListDeque<?> oPointer = (LinkedListDeque<?>) o;
             for (int i = 0;i< size();i++){
                 if (oPointer.get(i) != get(i)){
                     return false;
