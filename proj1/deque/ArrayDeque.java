@@ -126,8 +126,10 @@ public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
 
     //Supposed Object o isn't null.
     public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
         if (o instanceof ArrayDeque) {
-            if (((ArrayDeque<?>) o).nextLast == nextLast && ((ArrayDeque<?>) o).nextFirst == nextFirst) {
+            if (((ArrayDeque<?>) o).nextLast == nextLast && ((ArrayDeque<?>) o).nextFirst == nextFirst && ((ArrayDeque<?>) o).size == size) {
                 for (int i = 0; i < size; i++) {
                     if (((ArrayDeque<?>) o).get(i) != this.get(i)) {
                         return false;
@@ -153,7 +155,7 @@ public class ArrayDeque<Anytype> implements Deque<Anytype>,Iterable<Anytype> {
         }
 
         public Anytype next(){
-            Anytype returnItem = item[Pst];
+            Anytype returnItem = get(Pst);
             Pst += 1;
             return returnItem;
         }
