@@ -94,8 +94,8 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T> {
         if (index < 0 || index > size - 1) {
             return null;
         }
-        int ActualIndex = (nextFirst + index + 1 + item.length) % item.length;
-        return item[ActualIndex];
+        int actualIndex = (nextFirst + index + 1 + item.length) % item.length;
+        return item[actualIndex];
     }
 
     /**
@@ -125,6 +125,7 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T> {
         }
     }
 
+    @Override
     // Supposed Object o isn't null.
     public boolean equals(Object o) {
         if (this == o) {
@@ -133,8 +134,8 @@ public class ArrayDeque<T> implements Deque<T>,Iterable<T> {
         if (o == null) {
             return false;
         }
-        if (o instanceof ArrayDeque) {
-            ArrayDeque<?> other = (ArrayDeque<?>) o;
+        if (o instanceof Deque) {
+            Deque<?> other = (Deque<?>) o;
             if (other.size() != this.size) {
                 return false;
             }
