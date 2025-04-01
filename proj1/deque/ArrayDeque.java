@@ -76,7 +76,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     @Override
     // Constant time requested.
     public T removeLast() {
-        if (isEmpty()){
+        if (isEmpty()) {
             return null;
         }
         resizeRemove();
