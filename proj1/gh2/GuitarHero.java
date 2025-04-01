@@ -9,14 +9,14 @@ public class GuitarHero {
         GuitarString[] strings = new GuitarString[37];
 
         for (int i = 0; i < strings.length; i++) {
-            double frequency = 440.0 * Math.pow(2, (i - 24)/12.0);
+            double frequency = 440.0 * Math.pow(2, (i - 24) / 12.0);
             strings[i] = new GuitarString(frequency);
         }
 
-        while (true){
+        while (true) {
             if (StdDraw.hasNextKeyTyped()) {
-                char UserKey = StdDraw.nextKeyTyped();
-                int index = keyboard.indexOf(UserKey);
+                char userKey = StdDraw.nextKeyTyped();
+                int index = keyboard.indexOf(userKey);
                 if (index != -1) {
                     strings[index].pluck();
                 }
@@ -29,6 +29,7 @@ public class GuitarHero {
             StdAudio.play(sample);
 
             for (GuitarString string : strings) {
+
                 string.tic();
             }
         }

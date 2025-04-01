@@ -8,13 +8,13 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         private T item;
         private LinkedListNode next;
 
-        public LinkedListNode(LinkedListNode prev, T item, LinkedListNode next) {
+        private LinkedListNode(LinkedListNode prev, T item, LinkedListNode next) {
             this.prev = prev;
             this.item = item;
             this.next = next;
         }
 
-        public LinkedListNode() {
+        private LinkedListNode() {
             this(null, null, null);
         }
 
@@ -31,7 +31,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public void addFirst(T item) {
-        LinkedListNode newnode = new LinkedListNode(sentinel,item,sentinel.next);
+        LinkedListNode newnode = new LinkedListNode(sentinel, item, sentinel.next);
         sentinel.next.prev = newnode;
         sentinel.next = newnode;
         size = size + 1;
@@ -39,7 +39,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public void addLast(T item) {
-        LinkedListNode newnode = new LinkedListNode(sentinel.prev,item,sentinel);
+        LinkedListNode newnode = new LinkedListNode(sentinel.prev, item, sentinel);
         sentinel.prev.next = newnode;
         sentinel.prev = newnode;
         size = size + 1;
@@ -65,11 +65,11 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     @Override
     public T removeFirst() {
         if (!isEmpty()) {
-            LinkedListNode RemoveNode = sentinel.next;
-            sentinel.next = RemoveNode.next;
-            RemoveNode.next.prev = sentinel;
+            LinkedListNode removeNode = sentinel.next;
+            sentinel.next = removeNode.next;
+            removeNode.next.prev = sentinel;
             size--;
-            return RemoveNode.item;
+            return removeNode.item;
         }
         return null;
     }
@@ -77,11 +77,11 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     @Override
     public T removeLast() {
         if (!isEmpty()) {
-            LinkedListNode RemoveNode = sentinel.prev;
-            sentinel.prev = RemoveNode.prev;
-            RemoveNode.prev.next = sentinel;
+            LinkedListNode removeNode = sentinel.prev;
+            sentinel.prev = removeNode.prev;
+            removeNode.prev.next = sentinel;
             size--;
-            return RemoveNode.item;
+            return removeNode.item;
         }
         return null;
     }
@@ -121,35 +121,41 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         if (o == null) {
             return false;
         }
-        if (!(o instanceof Deque)) return false;
+        if (!(o instanceof Deque)) {
+            return false;
+        }
         Deque<?> other = (Deque<?>) o;
-        if (other.size() != this.size) return false;
-        for (int i = 0 ; i < size; i++) {
+        if (other.size() != this.size) {
+            return false;
+        }
+        for (int i = 0; i < size; i++) {
             Object otherItem = other.get(i);
             T thisItem = this.get(i);
             if (thisItem == null) {
-                if(otherItem != null) {
+                if (otherItem != null) {
                     return false;
                 }
             }
-            if (thisItem.equals(otherItem)) return true;
+            if (thisItem.equals(otherItem)) {
+                return true;
+            }
         }
         return false;
     }
-    public Iterator<T> iterator(){
+    public Iterator<T> iterator() {
         return new LinkedListDequeIterator();
     }
 
-    private class LinkedListDequeIterator implements Iterator<T>{
+    private class LinkedListDequeIterator implements Iterator<T> {
         int pst;
-        public LinkedListDequeIterator(){
+        private LinkedListDequeIterator() {
             pst = 0;
         }
-        public boolean hasNext(){
+        public boolean hasNext() {
             return pst < size;
         }
 
-        public T next(){
+        public T next() {
             T returnItem = get(pst);
             pst += 1;
             return returnItem;
